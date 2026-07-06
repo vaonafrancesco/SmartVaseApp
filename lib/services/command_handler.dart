@@ -1,0 +1,111 @@
+import 'dart:async';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smartvase/services/firestore_service.dart';
+import 'package:smartvase/services/providers.dart';
+
+/// Command execution state
+enum CommandExecutionState {
+  idle,
+  loading,
+  success,
+  error,
+}
+
+/// Command handler for managing ACK logic
+class CommandHandler extends StateNotifier<CommandExecutionState> {
+  final FirestoreService _firestoreService;
+
+  CommandHandler({
+    required FirestoreService firestoreService,
+  })  : _firestoreService = firestoreService,
+        super(CommandExecutionState.idle);
+
+  /// Execute a command and wait for ACK
+  /// Returns the result (success/error) for UI to handle
+  Future<String?> executeCommand(
+    Future<void> Function() commandFunction,
+  ) async {
+    state = CommandExecutionState.loading;
+
+    StreamSubscription? subscription;
+    Completer<String?> completer = Completer();
+
+    try {
+      // Execute the command
+      await commandFunction();
+
+      // Listen for ACK
+      subscription = _firestoreService.getCommandAckStream().listen(
+        (ack) {
+          if (ack.status == 'OK') {
+            state = CommandExecutionState.success;
+            subscription?.cancel();
+            completer.complete(null); // Success, no error message
+            // Reset to idle after a delay
+            Future.delayed(const Duration(seconds: 2), () {
+              if (mounted) {
+                state = CommandExecutionState.idle;
+              }
+            });
+          } else if (ack.status == 'ERROR') {
+            state = CommandExecutionState.error;
+            subscription?.cancel();
+            completer.complete(ack.detail); // Error with detail message
+            // Reset to idle after a delay
+            Future.delayed(const Duration(seconds: 2), () {
+              if (mounted) {
+                state = CommandExecutionState.idle;
+              }
+            });
+          }
+        },
+        onError: (error) {
+          state = CommandExecutionState.error;
+          completer.complete('Error listening for ACK: $error');
+          Future.delayed(const Duration(seconds: 2), () {
+            if (mounted) {
+              state = CommandExecutionState.idle;
+            }
+          });
+        },
+      );
+
+      // Timeout after 30 seconds
+      Future.delayed(const Duration(seconds: 30), () {
+        if (state == CommandExecutionState.loading) {
+          subscription?.cancel();
+          state = CommandExecutionState.error;
+          if (!completer.isCompleted) {
+            completer.complete('Command timeout - no ACK received');
+          }
+          Future.delayed(const Duration(seconds: 2), () {
+            if (mounted) {
+              state = CommandExecutionState.idle;
+            }
+          });
+        }
+      });
+
+      return completer.future;
+    } catch (e) {
+      state = CommandExecutionState.error;
+      return 'Error executing command: $e';
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
+
+/// Provider for command handler - scoped to each widget that needs it
+final commandHandlerProvider = StateNotifierProvider<CommandHandler, CommandExecutionState>(
+  (ref) {
+    final firestoreService = ref.watch(firestoreServiceProvider);
+    return CommandHandler(
+      firestoreService: firestoreService,
+    );
+  },
+);

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "415936613299",
+    "project_id": "smartvase-7cfd9",
+    "storage_bucket": "smartvase-7cfd9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415936613299:android:f89dde7a18bf8d857559c6",
+        "android_client_info": {
+          "package_name": "com.example.smartvase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASSIx4ptFg0yqFEcM3KKwzheqnstXYwag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
