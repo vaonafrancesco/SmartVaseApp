@@ -79,6 +79,13 @@ class FirestoreService {
         .set(command.toJson());
   }
 
+  /// Write plant config to Firestore
+  Future<void> writePlantConfig(Map<String, int> config) async {
+    await _firestore
+        .doc('${AppConstants.collectionSmartvase}/$deviceId/command/config')
+        .set(config);
+  }
+
   /// Write set mode command to Firestore
   Future<void> writeSetModeCommand(SetModeCommand command) async {
     await _firestore
