@@ -3,6 +3,9 @@ class AppConstants {
   /// Device ID - can be configured via environment or static config
   static const String deviceId = 'HUB_123456';
   
+  /// Camera Device ID
+  static const String camDeviceId = 'CAM_123456';
+  
   /// Firestore collection paths
   static const String collectionSmartvase = 'smartvase';
   
@@ -10,8 +13,11 @@ class AppConstants {
   static String telemetryPath(String deviceId) => 
       '$collectionSmartvase/$deviceId/telemetry/telemetry';
   
-  static String visionResultPath(String deviceId) => 
-      '$collectionSmartvase/$deviceId/vision/result';
+  static String visionLatestPath(String camDeviceId) => 
+      '$collectionSmartvase/$camDeviceId/vision/latest';
+  
+  static String visionCaptureCommandPath(String camDeviceId) => 
+      '$collectionSmartvase/$camDeviceId/command/capture';
   
   static String commandAckPath(String deviceId) => 
       '$collectionSmartvase/$deviceId/command/ack';

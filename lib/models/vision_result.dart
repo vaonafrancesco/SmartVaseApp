@@ -3,24 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'vision_result.freezed.dart';
 part 'vision_result.g.dart';
 
-/// Frame quality enum
-enum FrameQuality {
-  @JsonValue('ok')
-  ok,
-  @JsonValue('too_dark')
-  tooDark,
-  @JsonValue('too_bright')
-  tooBright,
-  @JsonValue('blurry')
-  blurry,
-  @JsonValue('occluded')
-  occluded,
-  @JsonValue('unknown')
-  unknown,
-}
-
-/// Leaf health enum
-enum LeafHealth {
+/// Plant health enum
+enum PlantHealth {
   @JsonValue('healthy')
   healthy,
   @JsonValue('warning')
@@ -32,21 +16,17 @@ enum LeafHealth {
 }
 
 /// Vision result data model
-/// Path: smartvase/{device_id}/vision/result
+/// Path: smartvase/CAM_123456/vision/latest
 @freezed
 class VisionResult with _$VisionResult {
   const factory VisionResult({
-    /// Required fields
-    required int schemaVersion,
-    required String modelVersion,
-    required int timestampUtc,
-    required String imageUrl,
-    required FrameQuality frameQuality,
-    required LeafHealth leafHealth,
-    
-    /// Optional fields
-    Map<String, dynamic>? metrics,
-    Map<String, dynamic>? recommendations
+    int? timestampUtc,
+    String? imageUrl,
+    PlantHealth? plantHealthy,
+    String? statusMessage,
+    double? foliageCoverage,
+    double? greenRatio,
+    double? brownRatio,
   }) = _VisionResult;
 
   factory VisionResult.fromJson(Map<String, dynamic> json) =>

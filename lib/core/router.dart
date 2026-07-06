@@ -3,6 +3,7 @@ import 'package:smartvase/features/dashboard/dashboard_screen.dart';
 import 'package:smartvase/features/onboarding/onboarding_screen.dart';
 import 'package:smartvase/features/settings/settings_screen.dart';
 import 'package:smartvase/features/vision/vision_screen.dart';
+import 'package:smartvase/features/vision/vision_history_screen.dart';
 import 'package:smartvase/features/main/main_screen.dart';
 
 /// App router configuration
@@ -26,6 +27,13 @@ final router = GoRouter(
           path: '/vision',
           name: 'vision',
           builder: (context, state) => const VisionScreen(),
+          routes: [
+            GoRoute(
+              path: 'history',
+              name: 'vision_history',
+              builder: (context, state) => const VisionHistoryScreen(),
+            ),
+          ],
         ),
         GoRoute(
           path: '/settings',

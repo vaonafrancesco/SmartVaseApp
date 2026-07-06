@@ -13,17 +13,17 @@ class MockPlant {
 class PlantMockData {
   static const List<MockPlant> plants = [
     MockPlant(
-      name: 'Basilico',
+      name: 'Basil',
       soilDryThreshold: 550,
       lightThreshold: 500,
     ),
     MockPlant(
-      name: 'Rosmarino',
+      name: 'rosemary',
       soilDryThreshold: 300,
       lightThreshold: 550,
     ),
     MockPlant(
-      name: 'Salvia',
+      name: 'Sage',
       soilDryThreshold: 400,
       lightThreshold: 500,
     ),

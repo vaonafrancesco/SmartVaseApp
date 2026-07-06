@@ -29,7 +29,7 @@ class FirestoreService {
   /// Stream vision result data in real-time
   Stream<VisionResult> getVisionResultStream() {
     return _firestore
-        .doc(AppConstants.visionResultPath(deviceId))
+        .doc(AppConstants.visionLatestPath(AppConstants.camDeviceId))
         .snapshots()
         .map((snapshot) {
       if (!snapshot.exists) {
@@ -105,10 +105,17 @@ class FirestoreService {
   /// Get current vision result snapshot (one-time read)
   Future<VisionResult?> getVisionResultOnce() async {
     final snapshot = await _firestore
-        .doc(AppConstants.visionResultPath(deviceId))
+        .doc(AppConstants.visionLatestPath(AppConstants.camDeviceId))
         .get();
     if (!snapshot.exists) return null;
     return VisionResult.fromJson(snapshot.data()!);
+  }
+
+  /// Write vision capture command to Firestore
+  Future<void> writeVisionCaptureCommand(Map<String, dynamic> command) async {
+    await _firestore
+        .doc(AppConstants.visionCaptureCommandPath(AppConstants.camDeviceId))
+        .set(command);
   }
 
   /// Get current alarm snapshot (one-time read)

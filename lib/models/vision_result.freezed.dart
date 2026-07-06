@@ -21,18 +21,13 @@ VisionResult _$VisionResultFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VisionResult {
-  /// Required fields
-  int get schemaVersion => throw _privateConstructorUsedError;
-  String get modelVersion => throw _privateConstructorUsedError;
-  int get timestampUtc => throw _privateConstructorUsedError;
-  String get imageUrl => throw _privateConstructorUsedError;
-  FrameQuality get frameQuality => throw _privateConstructorUsedError;
-  LeafHealth get leafHealth => throw _privateConstructorUsedError;
-
-  /// Optional fields
-  Map<String, dynamic>? get metrics => throw _privateConstructorUsedError;
-  Map<String, dynamic>? get recommendations =>
-      throw _privateConstructorUsedError;
+  int? get timestampUtc => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
+  PlantHealth? get plantHealthy => throw _privateConstructorUsedError;
+  String? get statusMessage => throw _privateConstructorUsedError;
+  double? get foliageCoverage => throw _privateConstructorUsedError;
+  double? get greenRatio => throw _privateConstructorUsedError;
+  double? get brownRatio => throw _privateConstructorUsedError;
 
   /// Serializes this VisionResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,14 +47,13 @@ abstract class $VisionResultCopyWith<$Res> {
   ) = _$VisionResultCopyWithImpl<$Res, VisionResult>;
   @useResult
   $Res call({
-    int schemaVersion,
-    String modelVersion,
-    int timestampUtc,
-    String imageUrl,
-    FrameQuality frameQuality,
-    LeafHealth leafHealth,
-    Map<String, dynamic>? metrics,
-    Map<String, dynamic>? recommendations,
+    int? timestampUtc,
+    String? imageUrl,
+    PlantHealth? plantHealthy,
+    String? statusMessage,
+    double? foliageCoverage,
+    double? greenRatio,
+    double? brownRatio,
   });
 }
 
@@ -78,49 +72,44 @@ class _$VisionResultCopyWithImpl<$Res, $Val extends VisionResult>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? schemaVersion = null,
-    Object? modelVersion = null,
-    Object? timestampUtc = null,
-    Object? imageUrl = null,
-    Object? frameQuality = null,
-    Object? leafHealth = null,
-    Object? metrics = freezed,
-    Object? recommendations = freezed,
+    Object? timestampUtc = freezed,
+    Object? imageUrl = freezed,
+    Object? plantHealthy = freezed,
+    Object? statusMessage = freezed,
+    Object? foliageCoverage = freezed,
+    Object? greenRatio = freezed,
+    Object? brownRatio = freezed,
   }) {
     return _then(
       _value.copyWith(
-            schemaVersion: null == schemaVersion
-                ? _value.schemaVersion
-                : schemaVersion // ignore: cast_nullable_to_non_nullable
-                      as int,
-            modelVersion: null == modelVersion
-                ? _value.modelVersion
-                : modelVersion // ignore: cast_nullable_to_non_nullable
-                      as String,
-            timestampUtc: null == timestampUtc
+            timestampUtc: freezed == timestampUtc
                 ? _value.timestampUtc
                 : timestampUtc // ignore: cast_nullable_to_non_nullable
-                      as int,
-            imageUrl: null == imageUrl
+                      as int?,
+            imageUrl: freezed == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            frameQuality: null == frameQuality
-                ? _value.frameQuality
-                : frameQuality // ignore: cast_nullable_to_non_nullable
-                      as FrameQuality,
-            leafHealth: null == leafHealth
-                ? _value.leafHealth
-                : leafHealth // ignore: cast_nullable_to_non_nullable
-                      as LeafHealth,
-            metrics: freezed == metrics
-                ? _value.metrics
-                : metrics // ignore: cast_nullable_to_non_nullable
-                      as Map<String, dynamic>?,
-            recommendations: freezed == recommendations
-                ? _value.recommendations
-                : recommendations // ignore: cast_nullable_to_non_nullable
-                      as Map<String, dynamic>?,
+                      as String?,
+            plantHealthy: freezed == plantHealthy
+                ? _value.plantHealthy
+                : plantHealthy // ignore: cast_nullable_to_non_nullable
+                      as PlantHealth?,
+            statusMessage: freezed == statusMessage
+                ? _value.statusMessage
+                : statusMessage // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            foliageCoverage: freezed == foliageCoverage
+                ? _value.foliageCoverage
+                : foliageCoverage // ignore: cast_nullable_to_non_nullable
+                      as double?,
+            greenRatio: freezed == greenRatio
+                ? _value.greenRatio
+                : greenRatio // ignore: cast_nullable_to_non_nullable
+                      as double?,
+            brownRatio: freezed == brownRatio
+                ? _value.brownRatio
+                : brownRatio // ignore: cast_nullable_to_non_nullable
+                      as double?,
           )
           as $Val,
     );
@@ -137,14 +126,13 @@ abstract class _$$VisionResultImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    int schemaVersion,
-    String modelVersion,
-    int timestampUtc,
-    String imageUrl,
-    FrameQuality frameQuality,
-    LeafHealth leafHealth,
-    Map<String, dynamic>? metrics,
-    Map<String, dynamic>? recommendations,
+    int? timestampUtc,
+    String? imageUrl,
+    PlantHealth? plantHealthy,
+    String? statusMessage,
+    double? foliageCoverage,
+    double? greenRatio,
+    double? brownRatio,
   });
 }
 
@@ -162,49 +150,44 @@ class __$$VisionResultImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? schemaVersion = null,
-    Object? modelVersion = null,
-    Object? timestampUtc = null,
-    Object? imageUrl = null,
-    Object? frameQuality = null,
-    Object? leafHealth = null,
-    Object? metrics = freezed,
-    Object? recommendations = freezed,
+    Object? timestampUtc = freezed,
+    Object? imageUrl = freezed,
+    Object? plantHealthy = freezed,
+    Object? statusMessage = freezed,
+    Object? foliageCoverage = freezed,
+    Object? greenRatio = freezed,
+    Object? brownRatio = freezed,
   }) {
     return _then(
       _$VisionResultImpl(
-        schemaVersion: null == schemaVersion
-            ? _value.schemaVersion
-            : schemaVersion // ignore: cast_nullable_to_non_nullable
-                  as int,
-        modelVersion: null == modelVersion
-            ? _value.modelVersion
-            : modelVersion // ignore: cast_nullable_to_non_nullable
-                  as String,
-        timestampUtc: null == timestampUtc
+        timestampUtc: freezed == timestampUtc
             ? _value.timestampUtc
             : timestampUtc // ignore: cast_nullable_to_non_nullable
-                  as int,
-        imageUrl: null == imageUrl
+                  as int?,
+        imageUrl: freezed == imageUrl
             ? _value.imageUrl
             : imageUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        frameQuality: null == frameQuality
-            ? _value.frameQuality
-            : frameQuality // ignore: cast_nullable_to_non_nullable
-                  as FrameQuality,
-        leafHealth: null == leafHealth
-            ? _value.leafHealth
-            : leafHealth // ignore: cast_nullable_to_non_nullable
-                  as LeafHealth,
-        metrics: freezed == metrics
-            ? _value._metrics
-            : metrics // ignore: cast_nullable_to_non_nullable
-                  as Map<String, dynamic>?,
-        recommendations: freezed == recommendations
-            ? _value._recommendations
-            : recommendations // ignore: cast_nullable_to_non_nullable
-                  as Map<String, dynamic>?,
+                  as String?,
+        plantHealthy: freezed == plantHealthy
+            ? _value.plantHealthy
+            : plantHealthy // ignore: cast_nullable_to_non_nullable
+                  as PlantHealth?,
+        statusMessage: freezed == statusMessage
+            ? _value.statusMessage
+            : statusMessage // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        foliageCoverage: freezed == foliageCoverage
+            ? _value.foliageCoverage
+            : foliageCoverage // ignore: cast_nullable_to_non_nullable
+                  as double?,
+        greenRatio: freezed == greenRatio
+            ? _value.greenRatio
+            : greenRatio // ignore: cast_nullable_to_non_nullable
+                  as double?,
+        brownRatio: freezed == brownRatio
+            ? _value.brownRatio
+            : brownRatio // ignore: cast_nullable_to_non_nullable
+                  as double?,
       ),
     );
   }
@@ -214,60 +197,36 @@ class __$$VisionResultImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VisionResultImpl implements _VisionResult {
   const _$VisionResultImpl({
-    required this.schemaVersion,
-    required this.modelVersion,
-    required this.timestampUtc,
-    required this.imageUrl,
-    required this.frameQuality,
-    required this.leafHealth,
-    final Map<String, dynamic>? metrics,
-    final Map<String, dynamic>? recommendations,
-  }) : _metrics = metrics,
-       _recommendations = recommendations;
+    this.timestampUtc,
+    this.imageUrl,
+    this.plantHealthy,
+    this.statusMessage,
+    this.foliageCoverage,
+    this.greenRatio,
+    this.brownRatio,
+  });
 
   factory _$VisionResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$VisionResultImplFromJson(json);
 
-  /// Required fields
   @override
-  final int schemaVersion;
+  final int? timestampUtc;
   @override
-  final String modelVersion;
+  final String? imageUrl;
   @override
-  final int timestampUtc;
+  final PlantHealth? plantHealthy;
   @override
-  final String imageUrl;
+  final String? statusMessage;
   @override
-  final FrameQuality frameQuality;
+  final double? foliageCoverage;
   @override
-  final LeafHealth leafHealth;
-
-  /// Optional fields
-  final Map<String, dynamic>? _metrics;
-
-  /// Optional fields
+  final double? greenRatio;
   @override
-  Map<String, dynamic>? get metrics {
-    final value = _metrics;
-    if (value == null) return null;
-    if (_metrics is EqualUnmodifiableMapView) return _metrics;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(value);
-  }
-
-  final Map<String, dynamic>? _recommendations;
-  @override
-  Map<String, dynamic>? get recommendations {
-    final value = _recommendations;
-    if (value == null) return null;
-    if (_recommendations is EqualUnmodifiableMapView) return _recommendations;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(value);
-  }
+  final double? brownRatio;
 
   @override
   String toString() {
-    return 'VisionResult(schemaVersion: $schemaVersion, modelVersion: $modelVersion, timestampUtc: $timestampUtc, imageUrl: $imageUrl, frameQuality: $frameQuality, leafHealth: $leafHealth, metrics: $metrics, recommendations: $recommendations)';
+    return 'VisionResult(timestampUtc: $timestampUtc, imageUrl: $imageUrl, plantHealthy: $plantHealthy, statusMessage: $statusMessage, foliageCoverage: $foliageCoverage, greenRatio: $greenRatio, brownRatio: $brownRatio)';
   }
 
   @override
@@ -275,37 +234,33 @@ class _$VisionResultImpl implements _VisionResult {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$VisionResultImpl &&
-            (identical(other.schemaVersion, schemaVersion) ||
-                other.schemaVersion == schemaVersion) &&
-            (identical(other.modelVersion, modelVersion) ||
-                other.modelVersion == modelVersion) &&
             (identical(other.timestampUtc, timestampUtc) ||
                 other.timestampUtc == timestampUtc) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
-            (identical(other.frameQuality, frameQuality) ||
-                other.frameQuality == frameQuality) &&
-            (identical(other.leafHealth, leafHealth) ||
-                other.leafHealth == leafHealth) &&
-            const DeepCollectionEquality().equals(other._metrics, _metrics) &&
-            const DeepCollectionEquality().equals(
-              other._recommendations,
-              _recommendations,
-            ));
+            (identical(other.plantHealthy, plantHealthy) ||
+                other.plantHealthy == plantHealthy) &&
+            (identical(other.statusMessage, statusMessage) ||
+                other.statusMessage == statusMessage) &&
+            (identical(other.foliageCoverage, foliageCoverage) ||
+                other.foliageCoverage == foliageCoverage) &&
+            (identical(other.greenRatio, greenRatio) ||
+                other.greenRatio == greenRatio) &&
+            (identical(other.brownRatio, brownRatio) ||
+                other.brownRatio == brownRatio));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    schemaVersion,
-    modelVersion,
     timestampUtc,
     imageUrl,
-    frameQuality,
-    leafHealth,
-    const DeepCollectionEquality().hash(_metrics),
-    const DeepCollectionEquality().hash(_recommendations),
+    plantHealthy,
+    statusMessage,
+    foliageCoverage,
+    greenRatio,
+    brownRatio,
   );
 
   /// Create a copy of VisionResult
@@ -324,38 +279,32 @@ class _$VisionResultImpl implements _VisionResult {
 
 abstract class _VisionResult implements VisionResult {
   const factory _VisionResult({
-    required final int schemaVersion,
-    required final String modelVersion,
-    required final int timestampUtc,
-    required final String imageUrl,
-    required final FrameQuality frameQuality,
-    required final LeafHealth leafHealth,
-    final Map<String, dynamic>? metrics,
-    final Map<String, dynamic>? recommendations,
+    final int? timestampUtc,
+    final String? imageUrl,
+    final PlantHealth? plantHealthy,
+    final String? statusMessage,
+    final double? foliageCoverage,
+    final double? greenRatio,
+    final double? brownRatio,
   }) = _$VisionResultImpl;
 
   factory _VisionResult.fromJson(Map<String, dynamic> json) =
       _$VisionResultImpl.fromJson;
 
-  /// Required fields
   @override
-  int get schemaVersion;
+  int? get timestampUtc;
   @override
-  String get modelVersion;
+  String? get imageUrl;
   @override
-  int get timestampUtc;
+  PlantHealth? get plantHealthy;
   @override
-  String get imageUrl;
+  String? get statusMessage;
   @override
-  FrameQuality get frameQuality;
+  double? get foliageCoverage;
   @override
-  LeafHealth get leafHealth;
-
-  /// Optional fields
+  double? get greenRatio;
   @override
-  Map<String, dynamic>? get metrics;
-  @override
-  Map<String, dynamic>? get recommendations;
+  double? get brownRatio;
 
   /// Create a copy of VisionResult
   /// with the given fields replaced by the non-null parameter values.
