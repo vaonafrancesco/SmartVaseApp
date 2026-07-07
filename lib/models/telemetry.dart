@@ -69,16 +69,22 @@ class Telemetry with _$Telemetry {
     MovementState? movementState,
     
     /// Environmental sensors
+    @JsonKey(name: 'humidity_percent')
     int? humidityPercent,
+    @JsonKey(name: 'pressure_hpa')
     int? pressureHpa,
+    @JsonKey(name: 'temperature_c')
     int? temperatureC,
+    @JsonKey(name: 'gas_resistance_ohms')
     int? gasResistanceOhms,
+    @JsonKey(name: 'soil_moisture')
     int? soilMoisture,
     
     /// Navigation distances
     DistancesCm? distancesCm,
     
     /// Fluid management
+    @JsonKey(name: 'water_level_cm')
     double? waterLevelCm,
     
     /// System status

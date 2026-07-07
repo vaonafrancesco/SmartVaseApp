@@ -35,55 +35,14 @@ class CommandHandler extends StateNotifier<CommandExecutionState> {
       // Execute the command
       await commandFunction();
 
-      // Listen for ACK
-      subscription = _firestoreService.getCommandAckStream().listen(
-        (ack) {
-          if (ack.status == 'OK') {
-            state = CommandExecutionState.success;
-            subscription?.cancel();
-            completer.complete(null); // Success, no error message
-            // Reset to idle after a delay
-            Future.delayed(const Duration(seconds: 2), () {
-              if (mounted) {
-                state = CommandExecutionState.idle;
-              }
-            });
-          } else if (ack.status == 'ERROR') {
-            state = CommandExecutionState.error;
-            subscription?.cancel();
-            completer.complete(ack.detail); // Error with detail message
-            // Reset to idle after a delay
-            Future.delayed(const Duration(seconds: 2), () {
-              if (mounted) {
-                state = CommandExecutionState.idle;
-              }
-            });
-          }
-        },
-        onError: (error) {
-          state = CommandExecutionState.error;
-          completer.complete('Error listening for ACK: $error');
-          Future.delayed(const Duration(seconds: 2), () {
-            if (mounted) {
-              state = CommandExecutionState.idle;
-            }
-          });
-        },
-      );
-
-      // Timeout after 30 seconds
-      Future.delayed(const Duration(seconds: 30), () {
-        if (state == CommandExecutionState.loading) {
-          subscription?.cancel();
-          state = CommandExecutionState.error;
-          if (!completer.isCompleted) {
-            completer.complete('Command timeout - no ACK received');
-          }
-          Future.delayed(const Duration(seconds: 2), () {
-            if (mounted) {
-              state = CommandExecutionState.idle;
-            }
-          });
+      // Bypass ACK logic for now since the remote server doesn't support it
+      state = CommandExecutionState.success;
+      completer.complete(null);
+      
+      // Reset to idle after a delay
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          state = CommandExecutionState.idle;
         }
       });
 

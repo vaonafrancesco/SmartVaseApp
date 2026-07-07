@@ -689,16 +689,22 @@ mixin _$Telemetry {
   MovementState? get movementState => throw _privateConstructorUsedError;
 
   /// Environmental sensors
+  @JsonKey(name: 'humidity_percent')
   int? get humidityPercent => throw _privateConstructorUsedError;
+  @JsonKey(name: 'pressure_hpa')
   int? get pressureHpa => throw _privateConstructorUsedError;
+  @JsonKey(name: 'temperature_c')
   int? get temperatureC => throw _privateConstructorUsedError;
+  @JsonKey(name: 'gas_resistance_ohms')
   int? get gasResistanceOhms => throw _privateConstructorUsedError;
+  @JsonKey(name: 'soil_moisture')
   int? get soilMoisture => throw _privateConstructorUsedError;
 
   /// Navigation distances
   DistancesCm? get distancesCm => throw _privateConstructorUsedError;
 
   /// Fluid management
+  @JsonKey(name: 'water_level_cm')
   double? get waterLevelCm => throw _privateConstructorUsedError;
 
   /// System status
@@ -730,13 +736,13 @@ abstract class $TelemetryCopyWith<$Res> {
     int? batteryVoltage,
     int? lux,
     MovementState? movementState,
-    int? humidityPercent,
-    int? pressureHpa,
-    int? temperatureC,
-    int? gasResistanceOhms,
-    int? soilMoisture,
+    @JsonKey(name: 'humidity_percent') int? humidityPercent,
+    @JsonKey(name: 'pressure_hpa') int? pressureHpa,
+    @JsonKey(name: 'temperature_c') int? temperatureC,
+    @JsonKey(name: 'gas_resistance_ohms') int? gasResistanceOhms,
+    @JsonKey(name: 'soil_moisture') int? soilMoisture,
     DistancesCm? distancesCm,
-    double? waterLevelCm,
+    @JsonKey(name: 'water_level_cm') double? waterLevelCm,
     int? freeRamBytes,
     Counters? counters,
   });
@@ -894,13 +900,13 @@ abstract class _$$TelemetryImplCopyWith<$Res>
     int? batteryVoltage,
     int? lux,
     MovementState? movementState,
-    int? humidityPercent,
-    int? pressureHpa,
-    int? temperatureC,
-    int? gasResistanceOhms,
-    int? soilMoisture,
+    @JsonKey(name: 'humidity_percent') int? humidityPercent,
+    @JsonKey(name: 'pressure_hpa') int? pressureHpa,
+    @JsonKey(name: 'temperature_c') int? temperatureC,
+    @JsonKey(name: 'gas_resistance_ohms') int? gasResistanceOhms,
+    @JsonKey(name: 'soil_moisture') int? soilMoisture,
     DistancesCm? distancesCm,
-    double? waterLevelCm,
+    @JsonKey(name: 'water_level_cm') double? waterLevelCm,
     int? freeRamBytes,
     Counters? counters,
   });
@@ -1024,13 +1030,13 @@ class _$TelemetryImpl implements _Telemetry {
     this.batteryVoltage,
     this.lux,
     this.movementState,
-    this.humidityPercent,
-    this.pressureHpa,
-    this.temperatureC,
-    this.gasResistanceOhms,
-    this.soilMoisture,
+    @JsonKey(name: 'humidity_percent') this.humidityPercent,
+    @JsonKey(name: 'pressure_hpa') this.pressureHpa,
+    @JsonKey(name: 'temperature_c') this.temperatureC,
+    @JsonKey(name: 'gas_resistance_ohms') this.gasResistanceOhms,
+    @JsonKey(name: 'soil_moisture') this.soilMoisture,
     this.distancesCm,
-    this.waterLevelCm,
+    @JsonKey(name: 'water_level_cm') this.waterLevelCm,
     this.freeRamBytes,
     this.counters,
   });
@@ -1058,14 +1064,19 @@ class _$TelemetryImpl implements _Telemetry {
 
   /// Environmental sensors
   @override
+  @JsonKey(name: 'humidity_percent')
   final int? humidityPercent;
   @override
+  @JsonKey(name: 'pressure_hpa')
   final int? pressureHpa;
   @override
+  @JsonKey(name: 'temperature_c')
   final int? temperatureC;
   @override
+  @JsonKey(name: 'gas_resistance_ohms')
   final int? gasResistanceOhms;
   @override
+  @JsonKey(name: 'soil_moisture')
   final int? soilMoisture;
 
   /// Navigation distances
@@ -1074,6 +1085,7 @@ class _$TelemetryImpl implements _Telemetry {
 
   /// Fluid management
   @override
+  @JsonKey(name: 'water_level_cm')
   final double? waterLevelCm;
 
   /// System status
@@ -1171,13 +1183,13 @@ abstract class _Telemetry implements Telemetry {
     final int? batteryVoltage,
     final int? lux,
     final MovementState? movementState,
-    final int? humidityPercent,
-    final int? pressureHpa,
-    final int? temperatureC,
-    final int? gasResistanceOhms,
-    final int? soilMoisture,
+    @JsonKey(name: 'humidity_percent') final int? humidityPercent,
+    @JsonKey(name: 'pressure_hpa') final int? pressureHpa,
+    @JsonKey(name: 'temperature_c') final int? temperatureC,
+    @JsonKey(name: 'gas_resistance_ohms') final int? gasResistanceOhms,
+    @JsonKey(name: 'soil_moisture') final int? soilMoisture,
     final DistancesCm? distancesCm,
-    final double? waterLevelCm,
+    @JsonKey(name: 'water_level_cm') final double? waterLevelCm,
     final int? freeRamBytes,
     final Counters? counters,
   }) = _$TelemetryImpl;
@@ -1205,14 +1217,19 @@ abstract class _Telemetry implements Telemetry {
 
   /// Environmental sensors
   @override
+  @JsonKey(name: 'humidity_percent')
   int? get humidityPercent;
   @override
+  @JsonKey(name: 'pressure_hpa')
   int? get pressureHpa;
   @override
+  @JsonKey(name: 'temperature_c')
   int? get temperatureC;
   @override
+  @JsonKey(name: 'gas_resistance_ohms')
   int? get gasResistanceOhms;
   @override
+  @JsonKey(name: 'soil_moisture')
   int? get soilMoisture;
 
   /// Navigation distances
@@ -1221,6 +1238,7 @@ abstract class _Telemetry implements Telemetry {
 
   /// Fluid management
   @override
+  @JsonKey(name: 'water_level_cm')
   double? get waterLevelCm;
 
   /// System status

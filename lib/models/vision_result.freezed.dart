@@ -21,12 +21,19 @@ VisionResult _$VisionResultFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VisionResult {
+  @JsonKey(name: 'timestamp_utc')
   int? get timestampUtc => throw _privateConstructorUsedError;
+  @JsonKey(name: 'image_url')
   String? get imageUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: 'plant_healthy', fromJson: _plantHealthFromJson)
   PlantHealth? get plantHealthy => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status_message')
   String? get statusMessage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'foliage_coverage', fromJson: _percentToDouble)
   double? get foliageCoverage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'green_ratio', fromJson: _percentToDouble)
   double? get greenRatio => throw _privateConstructorUsedError;
+  @JsonKey(name: 'brown_ratio', fromJson: _percentToDouble)
   double? get brownRatio => throw _privateConstructorUsedError;
 
   /// Serializes this VisionResult to a JSON map.
@@ -47,12 +54,16 @@ abstract class $VisionResultCopyWith<$Res> {
   ) = _$VisionResultCopyWithImpl<$Res, VisionResult>;
   @useResult
   $Res call({
-    int? timestampUtc,
-    String? imageUrl,
+    @JsonKey(name: 'timestamp_utc') int? timestampUtc,
+    @JsonKey(name: 'image_url') String? imageUrl,
+    @JsonKey(name: 'plant_healthy', fromJson: _plantHealthFromJson)
     PlantHealth? plantHealthy,
-    String? statusMessage,
+    @JsonKey(name: 'status_message') String? statusMessage,
+    @JsonKey(name: 'foliage_coverage', fromJson: _percentToDouble)
     double? foliageCoverage,
+    @JsonKey(name: 'green_ratio', fromJson: _percentToDouble)
     double? greenRatio,
+    @JsonKey(name: 'brown_ratio', fromJson: _percentToDouble)
     double? brownRatio,
   });
 }
@@ -126,12 +137,16 @@ abstract class _$$VisionResultImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    int? timestampUtc,
-    String? imageUrl,
+    @JsonKey(name: 'timestamp_utc') int? timestampUtc,
+    @JsonKey(name: 'image_url') String? imageUrl,
+    @JsonKey(name: 'plant_healthy', fromJson: _plantHealthFromJson)
     PlantHealth? plantHealthy,
-    String? statusMessage,
+    @JsonKey(name: 'status_message') String? statusMessage,
+    @JsonKey(name: 'foliage_coverage', fromJson: _percentToDouble)
     double? foliageCoverage,
+    @JsonKey(name: 'green_ratio', fromJson: _percentToDouble)
     double? greenRatio,
+    @JsonKey(name: 'brown_ratio', fromJson: _percentToDouble)
     double? brownRatio,
   });
 }
@@ -197,31 +212,40 @@ class __$$VisionResultImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VisionResultImpl implements _VisionResult {
   const _$VisionResultImpl({
-    this.timestampUtc,
-    this.imageUrl,
+    @JsonKey(name: 'timestamp_utc') this.timestampUtc,
+    @JsonKey(name: 'image_url') this.imageUrl,
+    @JsonKey(name: 'plant_healthy', fromJson: _plantHealthFromJson)
     this.plantHealthy,
-    this.statusMessage,
+    @JsonKey(name: 'status_message') this.statusMessage,
+    @JsonKey(name: 'foliage_coverage', fromJson: _percentToDouble)
     this.foliageCoverage,
-    this.greenRatio,
-    this.brownRatio,
+    @JsonKey(name: 'green_ratio', fromJson: _percentToDouble) this.greenRatio,
+    @JsonKey(name: 'brown_ratio', fromJson: _percentToDouble) this.brownRatio,
   });
 
   factory _$VisionResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$VisionResultImplFromJson(json);
 
   @override
+  @JsonKey(name: 'timestamp_utc')
   final int? timestampUtc;
   @override
+  @JsonKey(name: 'image_url')
   final String? imageUrl;
   @override
+  @JsonKey(name: 'plant_healthy', fromJson: _plantHealthFromJson)
   final PlantHealth? plantHealthy;
   @override
+  @JsonKey(name: 'status_message')
   final String? statusMessage;
   @override
+  @JsonKey(name: 'foliage_coverage', fromJson: _percentToDouble)
   final double? foliageCoverage;
   @override
+  @JsonKey(name: 'green_ratio', fromJson: _percentToDouble)
   final double? greenRatio;
   @override
+  @JsonKey(name: 'brown_ratio', fromJson: _percentToDouble)
   final double? brownRatio;
 
   @override
@@ -279,12 +303,16 @@ class _$VisionResultImpl implements _VisionResult {
 
 abstract class _VisionResult implements VisionResult {
   const factory _VisionResult({
-    final int? timestampUtc,
-    final String? imageUrl,
+    @JsonKey(name: 'timestamp_utc') final int? timestampUtc,
+    @JsonKey(name: 'image_url') final String? imageUrl,
+    @JsonKey(name: 'plant_healthy', fromJson: _plantHealthFromJson)
     final PlantHealth? plantHealthy,
-    final String? statusMessage,
+    @JsonKey(name: 'status_message') final String? statusMessage,
+    @JsonKey(name: 'foliage_coverage', fromJson: _percentToDouble)
     final double? foliageCoverage,
+    @JsonKey(name: 'green_ratio', fromJson: _percentToDouble)
     final double? greenRatio,
+    @JsonKey(name: 'brown_ratio', fromJson: _percentToDouble)
     final double? brownRatio,
   }) = _$VisionResultImpl;
 
@@ -292,18 +320,25 @@ abstract class _VisionResult implements VisionResult {
       _$VisionResultImpl.fromJson;
 
   @override
+  @JsonKey(name: 'timestamp_utc')
   int? get timestampUtc;
   @override
+  @JsonKey(name: 'image_url')
   String? get imageUrl;
   @override
+  @JsonKey(name: 'plant_healthy', fromJson: _plantHealthFromJson)
   PlantHealth? get plantHealthy;
   @override
+  @JsonKey(name: 'status_message')
   String? get statusMessage;
   @override
+  @JsonKey(name: 'foliage_coverage', fromJson: _percentToDouble)
   double? get foliageCoverage;
   @override
+  @JsonKey(name: 'green_ratio', fromJson: _percentToDouble)
   double? get greenRatio;
   @override
+  @JsonKey(name: 'brown_ratio', fromJson: _percentToDouble)
   double? get brownRatio;
 
   /// Create a copy of VisionResult

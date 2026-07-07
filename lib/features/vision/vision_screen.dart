@@ -1,10 +1,102 @@
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smartvase/models/models.dart';
 import 'package:smartvase/services/providers.dart';
 import 'package:go_router/go_router.dart';
+
+class StorageImageWidget extends StatefulWidget {
+  final String url;
+  const StorageImageWidget({super.key, required this.url});
+
+  @override
+  State<StorageImageWidget> createState() => _StorageImageWidgetState();
+}
+
+class _StorageImageWidgetState extends State<StorageImageWidget> {
+  String? _resolvedUrl;
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _resolveUrl();
+  }
+
+  @override
+  void didUpdateWidget(StorageImageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.url != widget.url) {
+      _resolveUrl();
+    }
+  }
+
+  Future<void> _resolveUrl() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    
+    try {
+      if (widget.url.startsWith('gs://')) {
+        final ref = FirebaseStorage.instance.refFromURL(widget.url);
+        final downloadUrl = await ref.getDownloadURL();
+        if (mounted) {
+          setState(() {
+            _resolvedUrl = downloadUrl;
+            _isLoading = false;
+          });
+        }
+      } else {
+        setState(() {
+          _resolvedUrl = widget.url;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const SizedBox(
+        height: 300,
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+    
+    if (_error != null || _resolvedUrl == null) {
+      return const SizedBox(
+        height: 300,
+        child: Center(child: Icon(Icons.error, color: Colors.red)),
+      );
+    }
+
+    return CachedNetworkImage(
+      imageUrl: _resolvedUrl!,
+      width: double.infinity,
+      height: 300,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => const SizedBox(
+        height: 300,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      errorWidget: (context, url, error) => const SizedBox(
+        height: 300,
+        child: Center(child: Icon(Icons.error)),
+      ),
+    );
+  }
+}
 
 /// Vision screen with capture functionality
 class VisionScreen extends ConsumerStatefulWidget {
@@ -15,102 +107,6 @@ class VisionScreen extends ConsumerStatefulWidget {
 }
 
 class _VisionScreenState extends ConsumerState<VisionScreen> {
-  bool _isCapturing = false;
-  int? _captureTimestamp;
-  Timer? _timeoutTimer;
-  StreamSubscription<VisionResult>? _visionSubscription;
-
-  @override
-  void dispose() {
-    _timeoutTimer?.cancel();
-    _visionSubscription?.cancel();
-    super.dispose();
-  }
-
-  Future<void> _captureImage() async {
-    final now = DateTime.now();
-    final timestamp = now.millisecondsSinceEpoch;
-    final timestampUtc = now.millisecondsSinceEpoch ~/ 1000;
-
-    setState(() {
-      _isCapturing = true;
-      _captureTimestamp = timestampUtc;
-    });
-
-    // Write capture command to Firestore
-    final command = {
-      'cmd_id': timestamp,
-      'timestamp_utc': timestampUtc,
-      'type': 'request_capture',
-    };
-
-    try {
-      final firestoreService = ref.read(firestoreServiceProvider);
-      await firestoreService.writeVisionCaptureCommand(command);
-
-      // Start timeout timer
-      _timeoutTimer?.cancel();
-      _timeoutTimer = Timer(const Duration(seconds: 60), () {
-        if (mounted && _isCapturing) {
-          setState(() {
-            _isCapturing = false;
-            _captureTimestamp = null;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Timeout: No new photo received in 60 seconds'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      });
-
-      // Listen for new vision result
-      _visionSubscription?.cancel();
-      _visionSubscription = firestoreService.getVisionResultStream().listen(
-        (visionResult) {
-          if (mounted && _isCapturing && _captureTimestamp != null && visionResult.timestampUtc != null) {
-            if (visionResult.timestampUtc! > _captureTimestamp!) {
-              setState(() {
-                _isCapturing = false;
-                _captureTimestamp = null;
-              });
-              _timeoutTimer?.cancel();
-            }
-          }
-        },
-        onError: (error) {
-          if (mounted && _isCapturing) {
-            setState(() {
-              _isCapturing = false;
-              _captureTimestamp = null;
-            });
-            _timeoutTimer?.cancel();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error: $error'),
-                backgroundColor: Colors.red,
-              ),
-            );
-          }
-        },
-      );
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isCapturing = false;
-          _captureTimestamp = null;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error capturing image: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final visionAsync = ref.watch(visionResultStreamProvider);
@@ -119,33 +115,12 @@ class _VisionScreenState extends ConsumerState<VisionScreen> {
       appBar: AppBar(
         title: const Text('Vision'),
       ),
-      body: Stack(
-        children: [
-          visionAsync.when(
-            data: (visionResult) => _buildVisionContent(context, visionResult),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Center(
-              child: Text('Error: $error'),
-            ),
-          ),
-          if (_isCapturing)
-            Container(
-              color: Colors.black54,
-              child: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(color: Colors.white),
-                    SizedBox(height: 16),
-                    Text(
-                      'Acquisizione e analisi fogliare in corso...',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-        ],
+      body: visionAsync.when(
+        data: (visionResult) => _buildVisionContent(context, visionResult),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(
+          child: Text('Error: $error'),
+        ),
       ),
     );
   }
@@ -174,20 +149,7 @@ class _VisionScreenState extends ConsumerState<VisionScreen> {
                     if (visionResult.imageUrl != null)
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                          imageUrl: visionResult.imageUrl!,
-                          width: double.infinity,
-                          height: 300,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const SizedBox(
-                            height: 300,
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
-                          errorWidget: (context, url, error) => const SizedBox(
-                            height: 300,
-                            child: Center(child: Icon(Icons.error)),
-                          ),
-                        ),
+                        child: StorageImageWidget(url: visionResult.imageUrl!),
                       )
                     else
                       const SizedBox(
@@ -261,21 +223,6 @@ class _VisionScreenState extends ConsumerState<VisionScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            // Capture button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _isCapturing ? null : _captureImage,
-                icon: const Icon(Icons.camera_alt),
-                label: const Text('GRAB'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
             // History button
             SizedBox(
               width: double.infinity,

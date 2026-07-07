@@ -38,10 +38,6 @@ class DashboardScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             _buildEnvironmentGrid(telemetry),
             const SizedBox(height: 24),
-            _buildSectionHeader('Device Status'),
-            const SizedBox(height: 12),
-            _buildDeviceStatusGrid(telemetry),
-            const SizedBox(height: 24),
             _buildSectionHeader('Commands'),
             const SizedBox(height: 12),
             _buildCommandPanel(context),
@@ -115,102 +111,6 @@ class DashboardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildDeviceStatusGrid(Telemetry telemetry) {
-    return GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 1.3,
-      children: [
-        _buildBatteryCard(telemetry.batteryVoltage),
-        _buildMovementCard(telemetry.movementState),
-      ],
-    );
-  }
-
-  Widget _buildBatteryCard(int? batteryVoltage) {
-    final percentage = batteryVoltage != null 
-        ? _getBatteryPercentage(batteryVoltage)
-        : null;
-    
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.battery_charging_full,
-              color: batteryVoltage != null 
-                  ? _getBatteryColor(batteryVoltage)
-                  : Colors.grey,
-              size: 36,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Battery',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4),
-            if (percentage != null)
-              Text(
-                '$percentage%',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            )
-            else
-              const Text(
-                'N/A',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMovementCard(MovementState? movementState) {
-    final stateText = movementState != null
-        ? _getMovementStateText(movementState)
-        : 'Unknown';
-    final stateColor = movementState != null
-        ? _getMovementStateColor(movementState)
-        : Colors.grey;
-    
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.directions_walk,
-              color: stateColor,
-              size: 36,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Movement',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              stateText,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: stateColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildTelemetryCard(
     String title,
     String value,
@@ -268,23 +168,10 @@ class DashboardScreen extends ConsumerWidget {
     );
   }
 
-  int _getBatteryPercentage(int millivolts) {
-    // Assuming 4200mV = 100%, 3200mV = 0%
-    final percentage = ((millivolts - 3200) / (4200 - 3200) * 100).round();
-    return percentage.clamp(0, 100);
-  }
-
   int _getWaterLevelPercentage(double cm) {
-    // Assuming 10cm = 100%, 0cm = 0%
-    final percentage = (cm / 10 * 100).round();
+    // Assuming 30cm = 100%, 0cm = 0%
+    final percentage = (cm / 30 * 100).round();
     return percentage.clamp(0, 100);
-  }
-
-  Color _getBatteryColor(int millivolts) {
-    final percentage = _getBatteryPercentage(millivolts);
-    if (percentage < 20) return Colors.red;
-    if (percentage < 50) return Colors.orange;
-    return Colors.green;
   }
 
   Color _getWaterLevelColor(double cm) {
@@ -298,32 +185,6 @@ class DashboardScreen extends ConsumerWidget {
     if (moisture < 20) return Colors.red;
     if (moisture < 40) return Colors.orange;
     return Colors.green;
-  }
-
-  String _getMovementStateText(MovementState state) {
-    switch (state) {
-      case MovementState.idle:
-        return 'Idle';
-      case MovementState.moving:
-        return 'Moving';
-      case MovementState.stuck:
-        return 'Stuck';
-      case MovementState.unknown:
-        return 'Unknown';
-    }
-  }
-
-  Color _getMovementStateColor(MovementState state) {
-    switch (state) {
-      case MovementState.idle:
-        return Colors.grey;
-      case MovementState.moving:
-        return Colors.green;
-      case MovementState.stuck:
-        return Colors.red;
-      case MovementState.unknown:
-        return Colors.orange;
-    }
   }
 }
 
@@ -431,7 +292,7 @@ class _WaterButton extends ConsumerWidget {
       child: ElevatedButton.icon(
         onPressed: commandHandler == CommandExecutionState.loading
             ? null
-            : () => _executeWater(context, ref),
+            : () => _showWaterDialog(context, ref),
         icon: commandHandler == CommandExecutionState.loading
             ? const SizedBox(
                 width: 20,
@@ -439,7 +300,7 @@ class _WaterButton extends ConsumerWidget {
                 child: CircularProgressIndicator(strokeWidth: 2),
               )
             : const Icon(Icons.water_drop),
-        label: const Text('Irrigation Manual'),
+        label: const Text('Manual irrigation'),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
@@ -447,19 +308,52 @@ class _WaterButton extends ConsumerWidget {
     );
   }
 
-  Future<void> _executeWater(BuildContext context, WidgetRef ref) async {
+  Future<void> _showWaterDialog(BuildContext context, WidgetRef ref) async {
+    final duration = await showDialog<int>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Seleziona durata'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.timer),
+              title: const Text('2 secondi'),
+              onTap: () => Navigator.pop(context, 2000),
+            ),
+            ListTile(
+              leading: const Icon(Icons.timer),
+              title: const Text('5 secondi'),
+              onTap: () => Navigator.pop(context, 5000),
+            ),
+            ListTile(
+              leading: const Icon(Icons.timer),
+              title: const Text('10 secondi'),
+              onTap: () => Navigator.pop(context, 10000),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (duration != null && context.mounted) {
+      _executeWater(context, ref, duration);
+    }
+  }
+
+  Future<void> _executeWater(BuildContext context, WidgetRef ref, int durationMs) async {
     final handler = ref.read(commandHandlerProvider.notifier);
     final service = ref.read(firestoreServiceProvider);
 
     final error = await handler.executeCommand(
-      () => service.writeWaterCommand(WaterCommand(durationMs: 5000)),
+      () => service.writeWaterCommand(WaterCommand(durationMs: durationMs)),
     );
 
     if (error == null) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Irrigation started'),
+          SnackBar(
+            content: Text('Irrigazione avviata per ${durationMs / 1000} secondi'),
             backgroundColor: Colors.green,
           ),
         );

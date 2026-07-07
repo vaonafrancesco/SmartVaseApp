@@ -57,12 +57,8 @@ class FirestoreService {
     return _firestore
         .doc(AppConstants.commandAckPath(deviceId))
         .snapshots()
-        .map((snapshot) {
-      if (!snapshot.exists) {
-        throw Exception('Command ACK document does not exist');
-      }
-      return CommandAck.fromJson(snapshot.data()!);
-    });
+        .where((snapshot) => snapshot.exists)
+        .map((snapshot) => CommandAck.fromJson(snapshot.data()!));
   }
 
   /// Write command config to Firestore
