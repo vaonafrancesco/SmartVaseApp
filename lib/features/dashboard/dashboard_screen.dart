@@ -66,7 +66,7 @@ class DashboardScreen extends ConsumerWidget {
         _buildTelemetryCard(
           'Soil Moisture',
           telemetry.soilMoisture != null 
-              ? '${telemetry.soilMoisture}%'
+              ? '${telemetry.soilMoisture}'
               : 'N/A',
           Icons.water_drop,
           telemetry.soilMoisture != null 
@@ -182,8 +182,8 @@ class DashboardScreen extends ConsumerWidget {
   }
 
   Color _getSoilMoistureColor(int moisture) {
-    if (moisture < 20) return Colors.red;
-    if (moisture < 40) return Colors.orange;
+    if (moisture > 500) return Colors.red;
+    if (moisture > 300) return Colors.orange;
     return Colors.green;
   }
 }
@@ -312,23 +312,23 @@ class _WaterButton extends ConsumerWidget {
     final duration = await showDialog<int>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Seleziona durata'),
+        title: const Text('Select duration'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: const Icon(Icons.timer),
-              title: const Text('2 secondi'),
+              title: const Text('2 seconds'),
               onTap: () => Navigator.pop(context, 2000),
             ),
             ListTile(
               leading: const Icon(Icons.timer),
-              title: const Text('5 secondi'),
+              title: const Text('5 seconds'),
               onTap: () => Navigator.pop(context, 5000),
             ),
             ListTile(
               leading: const Icon(Icons.timer),
-              title: const Text('10 secondi'),
+              title: const Text('10 seconds'),
               onTap: () => Navigator.pop(context, 10000),
             ),
           ],
@@ -353,7 +353,7 @@ class _WaterButton extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Irrigazione avviata per ${durationMs / 1000} secondi'),
+            content: Text('Irrigation started for ${durationMs / 1000} seconds'),
             backgroundColor: Colors.green,
           ),
         );

@@ -229,7 +229,7 @@ class _VisionScreenState extends ConsumerState<VisionScreen> {
               child: OutlinedButton.icon(
                 onPressed: () => context.go('/vision/history'),
                 icon: const Icon(Icons.history),
-                label: const Text('Visualizza Storico'),
+                label: const Text('View History'),
               ),
             ),
           ],

@@ -65,14 +65,21 @@ class FirestoreService {
   Future<void> writeCommandConfig(CommandConfig config) async {
     await _firestore
         .doc(AppConstants.commandConfigPath(deviceId))
-        .set(config.toJson());
+        .set({
+          'soil_dry_threshold': config.targetSoilMoisture,
+          'light_threshold': config.minLux,
+        });
   }
 
   /// Write water command to Firestore
   Future<void> writeWaterCommand(WaterCommand command) async {
     await _firestore
         .doc('${AppConstants.collectionSmartvase}/$deviceId/command/water')
-        .set(command.toJson());
+        .set({
+          'cmd_id': 101,
+          'type': 'water',
+          'duration_ms': command.durationMs,
+        });
   }
 
   /// Write plant config to Firestore
@@ -85,8 +92,12 @@ class FirestoreService {
   /// Write set mode command to Firestore
   Future<void> writeSetModeCommand(SetModeCommand command) async {
     await _firestore
-        .doc('${AppConstants.collectionSmartvase}/$deviceId/command/set_mode')
-        .set(command.toJson());
+        .doc('${AppConstants.collectionSmartvase}/$deviceId/command/setMode')
+        .set({
+          'cmd_id': 102,
+          'type': 'setMode',
+          'mode': command.mode.name.toUpperCase(),
+        });
   }
 
   /// Get current telemetry snapshot (one-time read)

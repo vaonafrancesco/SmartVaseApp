@@ -114,9 +114,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         controller: _targetSoilMoistureController,
                         decoration: const InputDecoration(
                           labelText: 'Target Soil Moisture',
-                          hintText: 'Target soil moisture percentage',
+                          hintText: 'Target soil moisture (raw)',
                           border: OutlineInputBorder(),
-                          suffixText: '%',
+                          prefixIcon: Icon(Icons.water_drop),
                         ),
                         keyboardType: TextInputType.number,
                         validator: (value) {
